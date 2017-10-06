@@ -1,18 +1,25 @@
-package com.example.rkrit.test;
+package com.example.rkrit.test.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements BlankFragment.OnFragmentInteractionListener {
+import com.example.rkrit.test.R;
+import com.example.rkrit.test.fordb.TestDBHelper;
+import com.example.rkrit.test.fragment.BlankFragment;
+import com.example.rkrit.test.fragment.DBFragment;
+
+import static java.security.AccessController.getContext;
+
+public class MainActivity extends FragmentActivity implements BlankFragment.OnFragmentInteractionListener,DBFragment.OnFragmentInteractionListener {
 
     public static final String EXTRA_MESSAGE = "com.example.app.MESSAGE";
     private int i;
@@ -51,6 +58,7 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
         super.onStart();
         i = getPreferences(Context.MODE_PRIVATE).getInt("i",0);
         setListeners();
+
     }
 
     private void setListeners() {
@@ -77,6 +85,18 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
     @Override
     public void onFragmentInteraction() {
         ((TextView)findViewById(R.id.textView2)).setText(((EditText) findViewById(R.id.editText)).getText().toString());
+    }
+
+    @Override
+    public void onChangeFragment() {
+        DBFragment dbFragment = new DBFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.fragment_container, dbFragment);
+        transaction.addToBackStack("Just name of tr");
+
+        transaction.commit();
+
     }
 
     @Override
