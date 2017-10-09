@@ -56,7 +56,7 @@ public class DBFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TestDBHelper testDBHelper = new TestDBHelper(getActivity());
-        SQLiteDatabase sqLiteDatabase = testDBHelper.getWritableDatabase();
+        final SQLiteDatabase sqLiteDatabase = testDBHelper.getWritableDatabase();
 
         View view = inflater.inflate(R.layout.fragment_db, container, false);
         listView = view.findViewById(R.id.list_view);
@@ -80,14 +80,16 @@ public class DBFragment extends Fragment {
         add_Smth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContentValues values = new ContentValues();
-                values.put(Table.Tag.LATITUDE,Double.parseDouble(latit.getText().toString()));
-                values.put(Table.Tag.LONGTITUDE,Double.parseDouble(longt.getText().toString()));
+                {
+                    ContentValues values = new ContentValues();
+                    values.put(Table.Tag.LATITUDE,Double.parseDouble(latit.getText().toString()));
+                    values.put(Table.Tag.LONGTITUDE,Double.parseDouble(longt.getText().toString()));
 
-                Log.i("Info","" + sqLiteDatabase.insert(Table.Tag.TABLE_NAME, null, values));
+                    Log.i("Info","" + sqLiteDatabase.insert(Table.Tag.TABLE_NAME, null, values));
 
-                tagsForMapss = DBService.getAllTags(DBService.getAllEntities(getActivity()));
-                listView.setAdapter(new ArrayAdapter(getActivity(),R.layout.row,tagsForMapss));
+                    tagsForMapss = DBService.getAllTags(DBService.getAllEntities(getActivity()));
+                    listView.setAdapter(new ArrayAdapter(getActivity(),R.layout.row,tagsForMapss));
+                }
             }
         });
 

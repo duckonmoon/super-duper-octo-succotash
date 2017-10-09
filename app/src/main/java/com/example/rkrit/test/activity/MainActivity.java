@@ -19,12 +19,13 @@ import com.example.rkrit.test.fragment.DBFragment;
 
 import static java.security.AccessController.getContext;
 
-public class MainActivity extends FragmentActivity implements BlankFragment.OnFragmentInteractionListener,DBFragment.OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements BlankFragment.OnFragmentInteractionListener, DBFragment.OnFragmentInteractionListener {
 
     public static final String EXTRA_MESSAGE = "com.example.app.MESSAGE";
     private int i;
     private Button button;
     private Button clicker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +45,11 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
 
             BlankFragment fragment = new BlankFragment();
             Bundle args = new Bundle();
-            args.putString(EXTRA_MESSAGE, ((EditText) findViewById(R.id.editText)).getText().toString() );
+            args.putString(EXTRA_MESSAGE, ((EditText) findViewById(R.id.editText)).getText().toString());
             fragment.setArguments(args);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container,fragment)
+                    .add(R.id.fragment_container, fragment)
                     .commit();
         }
     }
@@ -56,7 +57,7 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
     @Override
     protected void onStart() {
         super.onStart();
-        i = getPreferences(Context.MODE_PRIVATE).getInt("i",0);
+        i = getPreferences(Context.MODE_PRIVATE).getInt("i", 0);
         setListeners();
 
     }
@@ -69,10 +70,14 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
             }
         });
         clicker.setText("" + i);
-        clicker.setOnClickListener((v)->
-        {
-            ++i;
-            clicker.setText("" + i);
+        clicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    ++i;
+                    clicker.setText("" + i);
+                }
+            }
         });
     }
 
@@ -84,7 +89,7 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
 
     @Override
     public void onFragmentInteraction() {
-        ((TextView)findViewById(R.id.textView2)).setText(((EditText) findViewById(R.id.editText)).getText().toString());
+        ((TextView) findViewById(R.id.textView2)).setText(((EditText) findViewById(R.id.editText)).getText().toString());
     }
 
     @Override
@@ -104,7 +109,7 @@ public class MainActivity extends FragmentActivity implements BlankFragment.OnFr
         super.onStop();
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("i",i);
+        editor.putInt("i", i);
         editor.apply();
     }
 }

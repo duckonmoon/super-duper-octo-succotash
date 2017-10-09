@@ -61,10 +61,14 @@ public class BlankFragment extends Fragment {
                 onButtonPressed();
             }
         });
-        view.findViewById(R.id.next).setOnClickListener((v)-> {
-            if (mListener!= null)
-            {
-                mListener.onChangeFragment();
+        view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    if (mListener != null) {
+                        mListener.onChangeFragment();
+                    }
+                }
             }
         });
         return view;
